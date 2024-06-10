@@ -36,8 +36,9 @@ async function userSignInController(req,res){
             httpOnly: true,
             secure: isProduction, // Set secure flag only in production
             sameSite: isProduction ? 'None' : 'Lax', // Use 'None' for cross-site cookies in production, 'Lax' for localhost
-            domain: isProduction ? '.vercel.app' : 'localhost' 
+             
         }
+//domain: isProduction ? 'kaustubh-store.vercel.app.vercel.app' : 'localhost'
 
         res.cookie("token",token,tokenOption).status(200).json({
             message : "Login successfully",
