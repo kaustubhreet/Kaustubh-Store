@@ -1,5 +1,5 @@
-const backendDomin = "http://localhost:8080"
-
+const backendDomin = process.env.BACKEND_URL;
+//https://kaustubhstore.onrender.com
 const SummaryApi = {
     signUP : {
         url : `${backendDomin}/api/signup`,
