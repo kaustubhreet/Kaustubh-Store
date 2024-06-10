@@ -1,4 +1,5 @@
-const backendDomin = process.env.BACKEND_URL;
+const backendDomin = "https://kaustubhstore.onrender.com";
+console.log(backendDomin);
 //https://kaustubhstore.onrender.com
 const SummaryApi = {
     signUP : {
