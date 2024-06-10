@@ -2,18 +2,19 @@ import React, { useContext, useEffect, useState } from 'react'
 import SummaryApi from '../common'
 import Context from '../context'
 import displayINRCurrency from '../helpers/displayCurrency';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
+import Payment from './Payment';
+
 
 const Cart = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const context = useContext(Context)
     const loadingCart = new Array(4).fill(null)
-
+    const navigate = useNavigate();
 
     const fetchData = async () => {
-
         const response = await fetch(SummaryApi.addToCartProductView.url, {
             method: SummaryApi.addToCartProductView.method,
             credentials: 'include',
@@ -22,14 +23,11 @@ const Cart = () => {
             },
         })
 
-
         const responseData = await response.json()
 
         if (responseData.success) {
             setData(responseData.data)
         }
-
-
     }
 
     const handleLoading = async () => {
@@ -40,8 +38,8 @@ const Cart = () => {
         setLoading(true)
         handleLoading()
         setLoading(false)
-    }, [])
 
+    }, [])
 
     const increaseQty = async (id, qty) => {
         const response = await fetch(SummaryApi.updateCartProduct.url, {
@@ -116,6 +114,54 @@ const Cart = () => {
 
     const totalQty = data.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0)
     const totalPrice = data.reduce((preve, curr) => preve + (curr.quantity * curr?.productId?.sellingPrice), 0)
+
+
+    function cartids() {
+        const ids = [];
+        for (let i = 0; i < data.length; i++) {
+            ids.push(data[i]._id);
+            console.log(ids);
+        }
+        return ids;
+    }
+
+    const clearCartBackend = async () => {
+        const ids = cartids(data); // Get the array of cart item IDs
+        const response = await fetch(SummaryApi.clearCart.url, {
+            method: SummaryApi.clearCart.method,
+            credentials: 'include',
+            headers: {
+                "content-type": 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    ids
+                }
+            )
+        });
+
+        const responseData = await response.json();
+        //console.log(responseData);
+
+        if (responseData.success) {
+            setData([]); // Clear the cart on the frontend
+            context.fetchUserAddToCart();
+            //console.log("Cart cleared on backend");
+        }
+    };
+
+    const clearCart = () => {
+        //console.log("Clearing cart...");
+        clearCartBackend();
+    };
+
+    const handleShippingNavigation = () => {
+        // Perform any actions needed before navigating
+        // For example, clear the cart
+        // Navigate to the shipping page
+        navigate('/shipping'); // This will reload the page and open the shipping page
+    };
+
     return (
         <div className='container mx-auto'>
 
@@ -144,7 +190,7 @@ const Cart = () => {
                                 return (
                                     <div key={product?._id + "Add To Cart Loading"} className='w-full bg-white h-32 my-2 border border-slate-300  rounded grid grid-cols-[128px,1fr]'>
                                         <div className='w-32 h-32 bg-slate-200'>
-                                            <img src={product?.productId?.productImage[0]} className='w-full h-full object-scale-down mix-blend-multiply' />
+                                            <img src={product?.productId?.productImage[0]} className='w-full h-full object-scale-down mix-blend-multiply' alt={product._id} />
                                         </div>
                                         <div className='px-4 py-2 relative'>
                                             {/**delete product */}
@@ -191,9 +237,9 @@ const Cart = () => {
                                     <p>Total Price:</p>
                                     <p>{displayINRCurrency(totalPrice)}</p>
                                 </div>
-                                <Link to="/shipping">
-                                    <button className='bg-blue-600 p-2 text-white w-full mt-2'>Payment</button>
-                                </Link>
+
+                                <button onClick={handleShippingNavigation} amount={totalPrice} onPaymentSuccess={clearCart} className='bg-blue-600 p-2 text-white w-full mt-2'>Shipping Address</button>
+                                <Payment amount={totalPrice} onPaymentSuccess={clearCartBackend} />
                             </div>
                         )
                     }

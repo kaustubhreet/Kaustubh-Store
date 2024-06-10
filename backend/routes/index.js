@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 const {userSignUpController} = require("../controller/user/userSignUp")
+const {createPaymentVerifyController,createOrderController}=require("../controller/Shipment/PaymentController");
 const userSignInController = require('../controller/user/userSignIn')
 const userDetailsController = require('../controller/user/userDetails')
 const authToken = require('../middleware/authToken')
@@ -23,7 +24,7 @@ const deleteAddToCartProduct = require('../controller/user/deleteAddToCartProduc
 const searchProduct = require('../controller/product/searchProduct')
 const filterProductController = require('../controller/product/filterProduct')
 const AddShippingController=require('../controller/Shipment/Shipping')
-
+const clearCartProduct=require("../controller/user/ClearCartProduct");
 
 router.post("/signup",userSignUpController)
 router.post("/signin",userSignInController)
@@ -50,9 +51,13 @@ router.get("/countAddToCartProduct",authToken,countAddToCartProduct)
 router.get("/view-card-product",authToken,addToCartViewProduct)
 router.post("/update-cart-product",authToken,updateAddToCartProduct)
 router.post("/delete-cart-product",authToken,deleteAddToCartProduct)
+router.post("/clearCart",authToken,clearCartProduct)
+
 
 //user shipping address
 router.post("/shipping",authToken,AddShippingController)
+router.post("/order",authToken,createOrderController)
+router.post("/payment",authToken,createPaymentVerifyController)
 
 
 

@@ -1,11 +1,17 @@
-const uploadProductPermission = require("../../helpers/permission")
+//const uploadProductPermission = require("../../helpers/permission")
 const shippingModel = require("../../models/shippingModel")
 
 async function AddShippingController(req,res){
     try{
-       // const sessionUserId = req.userId
-    
-        const saveShipping = new shippingModel(req.body)
+        const currentUserId = req.userId
+        console.log("current user",currentUserId);
+       
+        const shippingData = {
+            ...req.body,
+            userId: currentUserId
+        };
+
+        const saveShipping = new shippingModel(shippingData)
         const saveAddress = await saveShipping.save()
 
         res.status(201).json({
@@ -14,7 +20,7 @@ async function AddShippingController(req,res){
             success : true,
             data : saveAddress
         })
-
+        console.log("shipping",res);
     }catch(err){
         res.status(400).json({
             message : err.message || err,

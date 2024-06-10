@@ -69,6 +69,10 @@ const SummaryApi = {
         url : `${backendDomin}/api/delete-cart-product`,
         method : 'post'
     },
+    clearCart:{
+         url : `${backendDomin}/api/clearCart`,
+        method : 'post'
+    },
     searchProduct : {
         url : `${backendDomin}/api/search`,
         method : 'get'
@@ -76,7 +80,20 @@ const SummaryApi = {
     filterProduct : {
         url : `${backendDomin}/api/filter-product`,
         method : 'post'
+    },
+    Shipping:{
+        url : `${backendDomin}/api/shipping`,
+        method : 'post'
+    },
+    Order:{
+        url : `${backendDomin}/api/order`,
+        method : 'post'
+    },
+    Payment:{
+        url : `${backendDomin}/api/payment`,
+        method : 'post'
     }
+
 }
 
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
 const shipping = mongoose.Schema({
    fullName: String,
@@ -8,10 +9,7 @@ const shipping = mongoose.Schema({
    PostalCode:Number,
    Country:String,
    PhoneNumber:Number,
-   email:{
-        ref : 'user',
-        type : String,
-   }
+   userId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
 },{
     timestamps : true
 })

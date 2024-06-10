@@ -12,6 +12,7 @@ import ProductDetails from '../pages/ProductDetails'
 import Cart from '../pages/Cart'
 import SearchProduct from '../pages/SearchProduct'
 import Shipping from '../pages/Shipping'
+import Payment from '../pages/Payment'
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
             {
                 path : "shipping",
                 element : <Shipping/>
+            },
+            {
+                path:"paymentSection",
+                element:<Payment/>
             },
             {
                 path : "admin-panel",
