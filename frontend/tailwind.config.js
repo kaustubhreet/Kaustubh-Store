@@ -6,6 +6,12 @@ module.exports = {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      width: ['responsive', 'hover', 'focus'],
+      opacity: ['responsive', 'hover', 'focus'],
+    },
+  },
   plugins: [],
 }
 
